@@ -1,0 +1,45 @@
+## mako
+<%! from django.utils.translation import ugettext as _ %>
+<%namespace name='static' file='/static_content.html'/>
+<%block name="bodyclass">view-in-course</%block>
+<%block name="pagetitle">Rating Grades</%block>
+<%inherit file="/main.html" />
+<%block name="headextra">
+
+<link rel="stylesheet" type="text/css" href="${static.url('ratings_tab/ratings_tab.css')}"/>
+
+<%static:css group='style-course'/>
+</%block>
+<%include file="/courseware/course_navigation.html" args="active_page='rating_grade'" />
+
+<div class="container ratings_tab">
+    <div class="wrapper">
+        <main id="main" aria-label="Content" tabindex="-1">
+            <section class="content" id="content">
+                <!-- Restrict chat to enrolled users only -->
+                % if user_info['is_enrolled']:
+                    <h2>Рейтинговые оценки</h2>
+                    % if user_info['display_name']:
+                    <p>Имя пользователя - ${user_info['display_name']}</p>
+                    % endif
+                    <table>
+                        <tr>
+                            <th>Рейтинговый контроль 1</th>
+                            <th>Рейтинговый контроль 2</th>
+                            <th>Экзамен</th>
+                        </tr>
+                        <tr>
+                            <td>${ratings['R1']}</td>
+                            <td>${ratings['R2']}</td>
+                            <td>${ratings['Exam']}</td>
+                        </tr> 
+                    </table>
+                % else:
+                    <h2 class="hd hd-2 title">This page is accessible to enrolled users only.</h2>
+                % endif
+                % if user_info['is_staff']:
+                % endif
+            </section>
+        </main>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+setup.py
+ratings_tab/__init__.py
+ratings_tab/apps.py
+ratings_tab/asgi.py
+ratings_tab/plugins.py
+ratings_tab/settings.py
+ratings_tab/urls.py
+ratings_tab/views.py
+ratings_tab/wsgi.py
+ratings_tab.egg-info/PKG-INFO
+ratings_tab.egg-info/SOURCES.txt
+ratings_tab.egg-info/dependency_links.txt
+ratings_tab.egg-info/entry_points.txt
+ratings_tab.egg-info/top_level.txt
+ratings_tab/settings/__init__.py
+ratings_tab/settings/common.py
+ratings_tab/settings/production.py

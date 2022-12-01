@@ -1,0 +1,6 @@
+[lms.djangoapp]
+ratings_tab = ratings_tab.apps:RatingsTabConfig
+
+[openedx.course_tab]
+ratings_tab = ratings_tab.plugins:RatingsTab
+

@@ -1,0 +1,11 @@
+table, th, td {
+    border: 1px solid;
+}
+
+.ratings_tab {
+    line-height: auto;
+}
+
+th, td {
+    padding: 7px; 
+}

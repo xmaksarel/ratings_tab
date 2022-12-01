@@ -1,0 +1,16 @@
+Metadata-Version: 1.1
+Name: ratings-tab
+Version: 0.1.0
+Summary: ratings_tab Open edX course_tab
+Home-page: https://github.com/xmaksarel/ratings_tab
+Author: Maxim Tsov
+Author-email: mtsov@edu.ektu.kz
+License: MIT
+Description: Shows student rating grade in a new tab.
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Platform :: Open edX
+Classifier: Natural Language :: English
+Classifier: Environment :: Web Environment
