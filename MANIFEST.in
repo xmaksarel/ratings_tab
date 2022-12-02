@@ -1,4 +1,4 @@
 include LICENSE.txt
 include README.md
-recursive-include rocketchat_tab/templates *
-recursive-include rocketchat_tab/static *
+recursive-include ratings_tab/templates *
+recursive-include ratings_tab/static *
