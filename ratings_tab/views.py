@@ -43,7 +43,6 @@ class RatingsView(EdxFragmentView):
         # For ratings_tab.html
         context = {
             "course": course,           # must in the root level to avoid "proctored exam error"
-            "show_chat_frame": True,
             "user_info": {
                 "username": user.username,
                 "email": user_email,
