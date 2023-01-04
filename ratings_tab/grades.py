@@ -7,6 +7,25 @@ from lms.djangoapps.program_enrollments.api import get_external_key_by_user_and_
 from xmodule.util.misc import get_default_short_labeler
 from openedx.core.lib.courses import get_course_by_id
 
+def grading_info_sort(grading_info):
+    grading_info_sorted = {}
+    for assignment in grading_info:
+        grading_info_sorted[assignment['type']]=assignment
+
+        if 'R1' in assignment['short_label']:
+            grading_info_sorted[assignment['type']]['rating']='R1'
+        elif 'R2' in assignment['short_label']:
+            grading_info_sorted[assignment['type']]['rating']='R2'
+        elif 'Exam' in assignment['short_label']:
+            grading_info_sorted[assignment['type']]['rating']='Exam'
+        else:
+            grading_info_sorted[assignment['type']]['rating']=''
+
+    grading_info_clean = {}
+    for assignment in grading_info_sorted:
+        if grading_info_sorted[assignment]['rating'] != '':
+            grading_info_clean[assignment] = grading_info_sorted[assignment]
+    return grading_info_clean
 
 def get_grades_for_student(course_key, grade_user):
     def _gradebook_entry(user, course, graded_subsections, course_grade):
@@ -102,41 +121,39 @@ def get_grades_for_student(course_key, grade_user):
         }
 
     def calculate_ratings(grades, grading_info):
-        grading_info_sorted = {}
         grades_sorted = {}
-
         for assignment in grading_info:
-            grading_info_sorted[assignment['type']]=assignment
             grades_sorted[assignment['type']] = []
 
-            if 'R1' in assignment['short_label']:
-                grading_info_sorted[assignment['type']]['rating']='R1'
-            elif 'R2' in assignment['short_label']:
-                grading_info_sorted[assignment['type']]['rating']='R2'
-            elif 'Exam' in assignment['short_label']:
-                grading_info_sorted[assignment['type']]['rating']='Exam'
+        grading_info = grading_info_sort(grading_info)
 
         for grades_subsection in grades['section_breakdown']:
             grades_sorted[grades_subsection['category']].append(grades_subsection['percent'])
 
+        # Remove grade if it is not included in the calculation of the rating
+        grades_temp = {} 
+        for assignment_type in grades_sorted:
+            if assignment_type in grading_info:
+                grades_temp[assignment_type] = grades_sorted[assignment_type]
+        grades_sorted = grades_temp
+
         # Removes lowest grades if there is 'drop_count'
         for assignment_type in grades_sorted:
             grades_sorted[assignment_type].sort(reverse=True)
-            for _ in range(grading_info_sorted[assignment_type]['drop_count']):
+            for _ in range(grading_info[assignment_type]['drop_count']):
                 grades_sorted[assignment_type].pop()
-
 
         ratings = {'R1':{'average':0,'weights_sum':0}, 'R2':{'average':0,'weights_sum':0}, 'Exam':{'average':0,'weights_sum':0}}
         for assignment_type in grades_sorted:
-            rating = grading_info_sorted[assignment_type]['rating']
-            weight = grading_info_sorted[assignment_type]['weight']
+            rating = grading_info[assignment_type]['rating']
+            weight = grading_info[assignment_type]['weight']
             ratings[rating]['weights_sum'] = ratings[rating]['weights_sum'] + weight
 
         for assignment_type in grades_sorted:
-            rating = grading_info_sorted[assignment_type]['rating']
+            rating = grading_info[assignment_type]['rating']
             if(len(grades_sorted[assignment_type]) != 0):
                 average = sum(grades_sorted[assignment_type]) / len(grades_sorted[assignment_type])
-                weight = grading_info_sorted[assignment_type]['weight']
+                weight = grading_info[assignment_type]['weight']
                 ratings[rating]['average'] = ratings[rating]['average'] + average * weight
 
         for rating in ratings:
