@@ -20,19 +20,22 @@
                 % if user_info['is_enrolled']:
                     <h2>Рейтинговые оценки</h2>
                     % if user_info['display_name']:
-                    <p>Имя пользователя - ${user_info['display_name']}</p>
                     % endif
                     <table>
                         <tr>
+                            <th>№</th>
+                            <th>Имя пользователя</th>
                             <th>Рейтинговый контроль 1</th>
                             <th>Рейтинговый контроль 2</th>
                             <th>Экзамен</th>
                         </tr>
-                        <tr>
-                            <td>${ratings['R1']}</td>
-                            <td>${ratings['R2']}</td>
-                            <td>${ratings['Exam']}</td>
-                        </tr> 
+                        % for line in ratings:
+                            <tr> 
+                            % for cell in line:
+                                <td>${line[cell]}</td>
+                            % endfor 
+                            </tr>
+                        % endfor 
                     </table>
                 % else:
                     <h2 class="hd hd-2 title">This page is accessible to enrolled users only.</h2>
