@@ -46,17 +46,21 @@ class RatingsView(EdxFragmentView):
             # https://github.com/openedx/edx-platform/blob/master/common/djangoapps/student/models.py
 
         ratings = None
-        if staff_access:
-            students = get_course_enrolled_users(course_key)
-            ratings = []
-            i = 1
-            for student in students:
-                grades = {'№': i, 'Username' :student.username}
+        requested_student = request.GET.get('student',None)
+
+        if staff_access and requested_student:
+            enrolled_students = get_course_enrolled_users(course_key)
+            student = None
+            for enrolled_student in enrolled_students:
+                if enrolled_student.username == requested_student:
+                    student = enrolled_student
+                    break
+            if student:
+                grades = {'Username':student.username}
                 grades.update(get_grades_for_student(course_key, student))
-                ratings.append(grades)
-                i = i + 1
+                ratings =[grades]
         elif user_is_enrolled:
-            grades = {'№': 1, 'Username' :user.username}
+            grades = {'Username' :user.username}
             grades.update(get_grades_for_student(course_key, user))
             ratings = [grades]
         # For ratings_tab.html

@@ -19,28 +19,28 @@
                 <!-- Restrict chat to enrolled users only -->
                 % if user_info['is_enrolled']:
                     <h2>Рейтинговые оценки</h2>
-                    % if user_info['display_name']:
+                    % if user_info['is_staff']:
+
                     % endif
-                    <table>
-                        <tr>
-                            <th>№</th>
-                            <th>Имя пользователя</th>
-                            <th>Рейтинговый контроль 1</th>
-                            <th>Рейтинговый контроль 2</th>
-                            <th>Экзамен</th>
-                        </tr>
-                        % for line in ratings:
-                            <tr> 
-                            % for cell in line:
-                                <td>${line[cell]}</td>
-                            % endfor 
+                    % if ratings:
+                        <table>
+                            <tr>
+                                <th>Имя пользователя</th>
+                                <th>Рейтинговый контроль 1</th>
+                                <th>Рейтинговый контроль 2</th>
+                                <th>Экзамен</th>
                             </tr>
-                        % endfor 
-                    </table>
+                            % for line in ratings:
+                                <tr> 
+                                % for cell in line:
+                                    <td>${line[cell]}</td>
+                                % endfor 
+                                </tr>
+                            % endfor 
+                        </table>
+                    % endif
                 % else:
                     <h2 class="hd hd-2 title">This page is accessible to enrolled users only.</h2>
-                % endif
-                % if user_info['is_staff']:
                 % endif
             </section>
         </main>
